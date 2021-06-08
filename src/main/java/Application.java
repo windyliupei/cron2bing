@@ -147,8 +147,8 @@ public class Application {
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
             int date = c.get(Calendar.DATE);
-
-            return String.format(ORIGINAL_CRON_Y, minute, hour,date,month,year);
+            //TODO：为啥加1呢
+            return String.format(ORIGINAL_CRON_Y, minute, hour,date+1,month+1,year);
         }else if(field.getWeekdays()==127){
             //每一天
             return String.format(ORIGINAL_CRON_EVERYDAY, minute, hour);
