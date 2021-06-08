@@ -95,7 +95,9 @@ public class Application {
             field.setYear(Integer.parseInt(result.get(6)));
         }
         field.setMinute(Integer.parseInt(result.get(1)));
-        field.setHour(Integer.parseInt(result.get(2)));
+        //转北京时间,App传来的就是UTC时间这里直接+8
+        //实际上这里Bingbing 并不使用日期，这里只是为了转换准确
+        field.setHour(Integer.parseInt(result.get(2)+8));
 
         return field;
     }
@@ -147,8 +149,21 @@ public class Application {
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
             int date = c.get(Calendar.DATE);
-            //TODO：为啥加1呢
-            return String.format(ORIGINAL_CRON_Y, minute, hour,date+1,month+1,year);
+
+            //
+            boolean overToday = isOverToday(field);
+            if(overToday){
+                date = date +1;
+            }
+            //转为UTC
+            int intHour = Integer.parseInt(hour);
+            if (intHour>=8){
+                intHour = intHour- 8;
+            }else{
+                intHour = 24+(intHour - 8);
+            }
+
+            return String.format(ORIGINAL_CRON_Y, minute, intHour,date,month+1,year);
         }else if(field.getWeekdays()==127){
             //每一天
             return String.format(ORIGINAL_CRON_EVERYDAY, minute, hour);
@@ -156,6 +171,33 @@ public class Application {
             return String.format(ORIGINAL_CRON, minute, hour,weekDay);
         }
 
+
+    }
+
+    private static boolean isOverToday(CustomCronField field) {
+
+        //Bingbing传过来的北京时间
+        Integer hour = field.getHour();
+        Integer minute = field.getMinute();
+        //转为UTC
+        if (hour>=8){
+            hour = hour- 8;
+        }else{
+            hour = 24+(hour - 8);
+        }
+        int bingbingTime = 60 * hour + minute;
+
+        //服务器系统时间
+        Calendar c = Calendar.getInstance();
+        int zoneOffset = c.get(java.util.Calendar.ZONE_OFFSET);
+        //夏令时
+        int dstOffset = c.get(java.util.Calendar.DST_OFFSET);
+        c.add(java.util.Calendar.MILLISECOND, -(zoneOffset + dstOffset));
+        int hour_sys = c.get(Calendar.HOUR);
+        int minute_sys = c.get(Calendar.MINUTE);
+        int sysTime = 60 * hour_sys + minute_sys;
+
+        return  bingbingTime <= sysTime;
 
     }
 

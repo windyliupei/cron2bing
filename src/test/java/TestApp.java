@@ -102,4 +102,24 @@ public class TestApp {
         customCronField = Application.parseCron("0 15 04 * * ?");
         Assert.assertEquals(127,customCronField.getWeekdays().intValue());
     }
+
+    @Test
+    public void overTodayTest(){
+        CustomCronField customCronField = new CustomCronField();
+        customCronField.setHour(15);
+        customCronField.setMinute(30);
+
+        //不重复
+        Integer weekDay = 0;
+        customCronField.setWeekdays(weekDay);
+        String s = Application.buildCron(customCronField);
+        Assert.assertEquals("?",s.split(" ")[5]);
+
+        customCronField.setHour(20);
+        customCronField.setMinute(30);
+        weekDay = 0;
+        customCronField.setWeekdays(weekDay);
+        s = Application.buildCron(customCronField);
+        Assert.assertEquals("?",s.split(" ")[5]);
+    }
 }
