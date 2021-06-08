@@ -1,19 +1,35 @@
 public class CustomCronField {
 
-    public Integer getMinutes() {
-        return minutes;
+    public Integer getMinute() {
+        return minute;
     }
 
-    public void setMinutes(Integer minutes) {
-        this.minutes = minutes;
+    public void setMinute(Integer minute) {
+        this.minute = minute;
     }
 
-    public Integer getHours() {
-        return hours;
+    public Integer getHour() {
+        return hour;
     }
 
-    public void setHours(Integer hours) {
-        this.hours = hours;
+    public void setHour(Integer hour) {
+        this.hour = hour;
+    }
+
+    public Integer getMonth() {
+        return month;
+    }
+
+    public void setMonth(Integer month) {
+        this.month = month;
+    }
+
+    public Integer getDay() {
+        return day;
+    }
+
+    public void setDay(Integer day) {
+        this.day = day;
     }
 
     public Integer getWeekdays() {
@@ -24,8 +40,19 @@ public class CustomCronField {
         this.weekdays = weekdays;
     }
 
-    private Integer minutes;
-    private Integer hours;
-    private Integer weekdays;
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    private Integer minute = 0;
+    private Integer hour = 0;
+    private Integer month = 0;
+    private Integer day = 0;
+    private Integer weekdays = 0;
+    private Integer year = 0;
 
 }
