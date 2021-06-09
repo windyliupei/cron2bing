@@ -197,7 +197,7 @@ public class Application {
         int minute_sys = c.get(Calendar.MINUTE);
         int sysTime = 60 * hour_sys + minute_sys;
 
-        return  bingbingTime <= sysTime;
+        return  bingbingTime < sysTime;
 
     }
 
